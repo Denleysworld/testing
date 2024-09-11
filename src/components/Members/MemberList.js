@@ -1,51 +1,21 @@
-import React, { useState, useEffect } from 'react';
+// src/MemberList.js
+import React from "react";
 
-const MemberList = () => {
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await fetch('/members', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setMembers(data);
-          setLoading(false);
-        } else {
-          setError('Failed to load members');
-        }
-      } catch (error) {
-        setError('Error loading members:', error);
-      }
-    };
-
-    fetchMembers();
-  }, []);
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
-
+const MemberList = ({ members }) => {
   return (
-    <ul>
-      {members.map((member) => (
-        <li key={member.id}>
-          {member.first_name} {member.last_name} ({member.email})
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h1>Member List</h1>
+      <ul>
+        {members.map((member) => (
+          <li key={member.id}>
+            {member.firstName} {member.lastName} - {member.email}
+            <div>
+              <strong>Phone:</strong> {member.phone} | <strong>Date Joined:</strong> {member.dateJoined} | <strong>Books Borrowed:</strong> {member.booksBorrowed}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
